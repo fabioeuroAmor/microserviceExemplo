@@ -1,6 +1,7 @@
 package br.com.code.microserviceExemplo.controller.v1;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,7 +27,7 @@ public class CidadeControllerV1{
 	
 	@PostMapping(value = "/cidades")
 	public ResponseEntity<Response> inserirCidade(@RequestParam(value = "dcTemperatura", required = true) Double dcTemperatura, @RequestParam(value = "v10m", required = true) Double v10m,
-			@RequestParam(value = "dcNome", required = true) String dcNome) throws Exception {
+			@RequestParam(value = "dcNome", required = true) String dcNome) {
          
 		 Response response = new Response();
          CidadeDto cidadeDto = new CidadeDto();
@@ -41,7 +42,8 @@ public class CidadeControllerV1{
 			response.setMensagensRetorno("Cidade inserida com sucesso!");
 			
 		} catch (Exception e) {
-			response.setMensagensRetorno(e.getMessage());			
+			response.setMensagensRetorno(e.getMessage());	
+           return  (ResponseEntity<Response>) ResponseEntity.status(500);
 		}		
 		
 		return ResponseEntity.ok(response);
@@ -50,7 +52,7 @@ public class CidadeControllerV1{
 	
 	
 	@GetMapping(value = "/cidades/{id}")
-	public ResponseEntity<Response> buscarPorId(@PathVariable("id") Integer id) throws Exception {
+	public ResponseEntity<Response> buscarPorId(@PathVariable("id") Integer id) {
 		
 		Response response = new Response();
 		
@@ -59,7 +61,8 @@ public class CidadeControllerV1{
 			response.setMensagensRetorno("Cidade enconatda com id = " + id);
 			
 		} catch (Exception e) {
-			response.setMensagensRetorno(e.getMessage());			
+			response.setMensagensRetorno(e.getMessage());
+			return (ResponseEntity<Response>) ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR);
 		}		
 		
 		return ResponseEntity.ok(response);
@@ -67,7 +70,7 @@ public class CidadeControllerV1{
 	}
 	
 	@GetMapping(value = "/cidades")
-	public ResponseEntity<Response> buscarTodasCidades(@RequestParam(value="page", required = false, defaultValue = "0")int page,@RequestParam(value="size", required = false, defaultValue = "10")int size) throws Exception {
+	public ResponseEntity<Response> buscarTodasCidades(@RequestParam(value="page", required = false, defaultValue = "0")int page,@RequestParam(value="size", required = false, defaultValue = "10")int size) {
       
 		Response response = new Response();
 		
@@ -76,7 +79,8 @@ public class CidadeControllerV1{
 			response.setMensagensRetorno("Cidade buscarCidadesPorV10m() paginada!" );
 			
 		} catch (Exception e) {
-			response.setMensagensRetorno(e.getMessage());			
+			response.setMensagensRetorno(e.getMessage());	
+			return (ResponseEntity<Response>) ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR);
 		}		
 		
 		return ResponseEntity.ok(response);
@@ -86,7 +90,7 @@ public class CidadeControllerV1{
 	
 	@GetMapping(value = "/cidades/teste")
 	public ResponseEntity<Response> buscarTodasCidadesPaginacaoNaMao(@RequestParam(value="searchTerm", required = false, defaultValue = "")String searchTerm,@RequestParam(value="page", required = false, defaultValue = "0")int page,
-			@RequestParam(value="pageSize", required = false, defaultValue = "10")int pageSize) throws Exception {
+			@RequestParam(value="pageSize", required = false, defaultValue = "10")int pageSize){
       
 		Response response = new Response();
 		
@@ -95,7 +99,8 @@ public class CidadeControllerV1{
 			response.setMensagensRetorno("Cidade buscarCidadesPorV10m() paginada!" );
 			
 		} catch (Exception e) {
-			response.setMensagensRetorno(e.getMessage());			
+			response.setMensagensRetorno(e.getMessage());
+			return (ResponseEntity<Response>) ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR);
 		}		
 		
 		return ResponseEntity.ok(response);
