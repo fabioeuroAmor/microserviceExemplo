@@ -18,7 +18,7 @@ import br.com.code.microserviceExemplo.service.CidadeService;
 
 @RestController
 @RequestMapping("/api/v1")
-public class CidadeController{
+public class CidadeControllerV1{
 	
 	@Autowired
 	CidadeService cidadeService;
