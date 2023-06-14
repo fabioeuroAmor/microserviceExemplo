@@ -1,7 +1,13 @@
 package br.com.code.microserviceExemplo.controller.v1;
 
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import br.com.code.microserviceExemplo.dto.CidadeDto;
 import br.com.code.microserviceExemplo.json.Response;
@@ -24,6 +31,9 @@ public class CidadeControllerV1{
 	@Autowired
 	CidadeService cidadeService;
 	
+	@Autowired
+	RestTemplate restTemplate;
+	
 	
 	@PostMapping(value = "/cidades")
 	public ResponseEntity<Response> inserirCidade(@RequestParam(value = "dcTemperatura", required = true) Double dcTemperatura, @RequestParam(value = "v10m", required = true) Double v10m,
@@ -32,8 +42,15 @@ public class CidadeControllerV1{
 		 Response response = new Response();
          CidadeDto cidadeDto = new CidadeDto();
 		
-		try {		
-			
+		try {	
+			 //Exemplo Integracoes sincronas
+//			 HttpHeaders headers = new HttpHeaders();
+//		     headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+//		     HttpEntity <String> entity = new HttpEntity<String>(headers);
+//		     
+//		     restTemplate.exchange("http://localhost:8082/api/supporttables/v1/cidade/busca/todas", HttpMethod.GET, entity, String.class).getBody();
+		      
+		      
 			cidadeDto.setDcTemperatura(dcTemperatura);
 			cidadeDto.setV10m(v10m);
 			cidadeDto.setDcNome(dcNome);
@@ -55,6 +72,7 @@ public class CidadeControllerV1{
 	public ResponseEntity<Response> buscarPorId(@PathVariable("id") Integer id) {
 		
 		Response response = new Response();
+		
 		
 		try {			
 			response.setModeloRetorno(cidadeService.buscarPorId(id));
